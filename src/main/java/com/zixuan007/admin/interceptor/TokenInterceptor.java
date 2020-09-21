@@ -1,6 +1,9 @@
 package com.zixuan007.admin.interceptor;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zixuan007.admin.common.utils.TokenUtil;
+import com.zixuan007.admin.pojo.Result;
+import com.zixuan007.admin.pojo.ResultStatus;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +17,7 @@ import java.io.PrintWriter;
  */
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
+    private static final String TOKEN_NAME = "small-admin-token";
 
 
     @Override
@@ -30,7 +34,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (token != null) {
             boolean result = TokenUtil.verify(token);
             if (result) {
-                System.out.println("通过拦截器");
+                System.out.println("检测到token信息: " + token);
                 return true;
             }
         }
@@ -38,14 +42,14 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
         PrintWriter out = null;
         try {
-            JSONObject json = new JSONObject();
+           /* JSONObject json = new JSONObject();
             json.put("success", "false");
             json.put("msg", "认证失败");
             json.put("code", "500");
-
-            response.getWriter().append(json.toString());
-            System.out.println("认证失败，未通过拦截器");
-
+           */
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED));
+            response.getWriter().append(objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED)));
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(500);

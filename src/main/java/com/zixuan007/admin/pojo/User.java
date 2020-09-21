@@ -1,21 +1,23 @@
 package com.zixuan007.admin.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import java.io.Serializable;
+
 
 /**
  * @author zixuan007
  */
 @Data
-@Table(name = "user")
-public class User {
+@TableName("user")
+public class User implements Serializable {
     private long id;
     private String username;
     private String password;
     private String birthday;
-    @Column(name = "fullName")
+    @TableField("fullName")
     private String fullName;
 
     public User() {

@@ -18,6 +18,7 @@ import java.util.List;
 @Configuration
 public class InterceptConfiguration implements WebMvcConfigurer {
 
+
     @Autowired
     private TokenInterceptor tokenInterceptor;
 
@@ -31,12 +32,12 @@ public class InterceptConfiguration implements WebMvcConfigurer {
         //排除拦截器的列表
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/user_register");  //注册
-        excludePath.add("/login");          //登录
+        excludePath.add("/user/login");     //登录
         excludePath.add("/logout");         //登出
         excludePath.add("/static/**");      //静态资源
         excludePath.add("/assets/**");      //静态资源
 
-        System.out.println(excludePath);
+        System.out.println("可以过权限的请求: " + excludePath);
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);

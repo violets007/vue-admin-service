@@ -1,5 +1,8 @@
 package com.zixuan007.admin.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.zixuan007.admin.mapper.UserMapper;
 import com.zixuan007.admin.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +20,18 @@ public class UserService {
     private UserMapper userMapper;
 
     public User findUserById(long userId) {
-        return userMapper.selectByPrimaryKey(userId);
+        return userMapper.selectById(userId);
     }
 
     public List getList() {
-        return userMapper.selectAll();
+        return userMapper.findAll();
     }
 
     public boolean login(User user) {
-        return userMapper.select(user) != null;
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("username", user.getUsername());
+        userQueryWrapper.eq("password", user.getPassword());
+
+        return userMapper.selectOne(userQueryWrapper) != null;
     }
 }
