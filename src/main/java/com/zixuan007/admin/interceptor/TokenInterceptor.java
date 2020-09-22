@@ -32,7 +32,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         String token = request.getHeader("small-admin-token");
         if (token != null) {
-            boolean result = TokenUtil.verify(token);
+            boolean result = TokenUtil.parseToken(token) != null;
             if (result) {
                 System.out.println("检测到token信息: " + token);
                 return true;

@@ -1,8 +1,6 @@
 package com.zixuan007.admin.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.zixuan007.admin.mapper.UserMapper;
 import com.zixuan007.admin.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;

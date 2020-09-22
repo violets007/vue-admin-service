@@ -34,10 +34,10 @@ public class UserController {
     public Result<HashMap<String, Object>> login(@RequestBody User user, HttpServletRequest request) {
         //验证当前token是否可用
         String token = request.getHeader("small-admin-token");
-        if (TokenUtil.verify(token)) {
+        Claims claims = TokenUtil.parseToken(token);
+        if (claims != null) {
             //获取当前token的用户信息
-            Claims claims = TokenUtil.checkJWT(token);
-            long id = (long) claims.get("id");
+            Integer id = (Integer) claims.get("uid");
             String username = (String) claims.get("username");
             HashMap<String, Object> userMap = new HashMap<>();
             userMap.put("uid", id);
@@ -46,12 +46,7 @@ public class UserController {
         } else {
             User resultUser = userService.login(user);
             if (resultUser != null) {
-                try {
-                    token = TokenUtil.createToken(user);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                    return Result.failure(ResultStatus.UNAUTHORIZED);
-                }
+                token = TokenUtil.createJwtToken(user);
                 HashMap<String, Object> userMap = new HashMap<>();
                 userMap.put("uid", resultUser.getId());
                 userMap.put("username", resultUser.getUsername());
@@ -72,7 +67,7 @@ public class UserController {
     @GetMapping("/verify")
     public Result<Void> verify(HttpServletRequest request) {
         String token = request.getHeader("small-admin-token");
-        boolean verify = TokenUtil.verify(token);
+        boolean verify = TokenUtil.parseToken(token) != null;
         if (verify) {
             return Result.success();
         }

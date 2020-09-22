@@ -1,17 +1,12 @@
 package com.zixuan007.admin.common.utils;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.zixuan007.admin.pojo.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,75 +16,52 @@ public class TokenUtil {
 
     private static final long EXPIRE_TIME = 15 * 60 * 1000;     //token过期时间暂定为15分钟
     private static final String TOKEN_SECRET = "token123";      //密钥盐
+    private static final Logger logger = LoggerFactory.getLogger(TokenUtil.class);
 
+    public static String createJwtToken(User user) {
+        //设置失效时间
+        //获取当前时间
+        long now = System.currentTimeMillis();
+        //当前时间+有效时间=过期时间
+        long exp = now + EXPIRE_TIME;
+        //创建JwtBuilder
 
-    /**
-     * 生成头部信息  //对应jwt第一部分  头部信息
-     *
-     * @return
-     */
-    private static Map<String, Object> createHead() {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("typ", "JWT");
-        map.put("alg", "HS512");
-        return map;
-    }
-
-    /**
-     * 生成token
-     *
-     * @param
-     * @return
-     * @throws
-     */
-    public static String createToken(User user) throws JsonProcessingException {
-        String token = Jwts.builder().setHeader(createHead())  //添加头部信息
-                .setSubject("zixuan007")  //token得主题
+        JwtBuilder jwtBuilder = Jwts.builder()
+                .setId(user.getId() + "")
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date())
+                .signWith(SignatureAlgorithm.HS256, TOKEN_SECRET)
+                //添加非私密的其它内容
                 .claim("uid", user.getId())
-                .claim("username", user.getUsername()) //自定义载荷
-                .setIssuedAt(new Date())  //签发token时候得时间
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME))  //过期时间
-                .signWith(SignatureAlgorithm.HS256, "TOKEN_SECRET").compact(); //添加密匙并加密 生成token
+                .claim("username", user.getUsername());
+
+        //设置失效时间
+        jwtBuilder.setExpiration(new Date(exp));
+        String token = jwtBuilder.compact();
         return token;
-
     }
 
-
-    /**
-     * 签名验证
-     *
-     * @param token
-     * @return
-     */
-    public static boolean verify(String token) {
+    public static Claims parseToken(String token) {
+        Claims claims = null;
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();
-            DecodedJWT jwt = verifier.verify(token);
-           /* System.out.println("认证通过：");
-            System.out.println("issuer: " + jwt.getIssuer());
-            System.out.println("username: " + jwt.getClaim("username").asString());
-            System.out.println("过期时间：      " + jwt.getExpiresAt());*/
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+            claims = Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(token).getBody();
+        } catch (ExpiredJwtException e) {
 
+            return null;
+        } catch (UnsupportedJwtException e) {
+
+            return null;
+        } catch (MalformedJwtException e) {
+
+            return null;
+        } catch (SignatureException e) {
+
+            return null;
+        } catch (IllegalArgumentException e) {
+
+            return null;
+        }
+        return claims;
     }
 
-    /**
-     * 校验token
-     *
-     * @param token
-     * @return
-     */
-    public static Claims checkJWT(String token) {
-        try {
-            final Claims claims = Jwts.parser().setSigningKey(TOKEN_SECRET).
-                    parseClaimsJws(token).getBody();
-            return claims;
-
-        } catch (Exception e) {
-        }
-        return null;
-    }
 }
