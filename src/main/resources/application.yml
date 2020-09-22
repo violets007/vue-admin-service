@@ -3,10 +3,12 @@ spring:
     name: vue-admin-service
   ##数据库配置
   datasource:
-    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    default-property-inclusion: non_null
 
 # 当前服务器占用的端口
 server:
@@ -16,3 +18,5 @@ server:
 mybatis-plus:
   type-aliases-package: com.zixuan007.admin.pojo
   mapper-locations: classpath:mappers/*.xml
+
+# Jackson过滤掉空值

@@ -27,11 +27,11 @@ public class UserService {
         return userMapper.findAll();
     }
 
-    public boolean login(User user) {
+    public User login(User user) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("username", user.getUsername());
         userQueryWrapper.eq("password", user.getPassword());
 
-        return userMapper.selectOne(userQueryWrapper) != null;
+        return userMapper.selectOne(userQueryWrapper);
     }
 }

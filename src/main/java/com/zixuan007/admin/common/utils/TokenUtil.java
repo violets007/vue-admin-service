@@ -4,9 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zixuan007.admin.pojo.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zixuan007
@@ -18,26 +24,32 @@ public class TokenUtil {
 
 
     /**
-     * 签名生成
+     * 生成头部信息  //对应jwt第一部分  头部信息
      *
-     * @param user
      * @return
      */
-    public static String sign(User user) {
+    private static Map<String, Object> createHead() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("typ", "JWT");
+        map.put("alg", "HS512");
+        return map;
+    }
 
-        String token = null;
-        try {
-            Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
-            token = JWT.create()
-                    .withIssuer("auth0")
-                    .withClaim("id", user.getId())              //用户ID
-                    .withClaim("username", user.getUsername())  //用户名称
-                    .withExpiresAt(expiresAt)
-                    // 使用了HMAC256加密算法。
-                    .sign(Algorithm.HMAC256(TOKEN_SECRET));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    /**
+     * 生成token
+     *
+     * @param
+     * @return
+     * @throws
+     */
+    public static String createToken(User user) throws JsonProcessingException {
+        String token = Jwts.builder().setHeader(createHead())  //添加头部信息
+                .setSubject("zixuan007")  //token得主题
+                .claim("uid", user.getId())
+                .claim("username", user.getUsername()) //自定义载荷
+                .setIssuedAt(new Date())  //签发token时候得时间
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME))  //过期时间
+                .signWith(SignatureAlgorithm.HS256, "TOKEN_SECRET").compact(); //添加密匙并加密 生成token
         return token;
 
     }
@@ -64,5 +76,20 @@ public class TokenUtil {
 
     }
 
+    /**
+     * 校验token
+     *
+     * @param token
+     * @return
+     */
+    public static Claims checkJWT(String token) {
+        try {
+            final Claims claims = Jwts.parser().setSigningKey(TOKEN_SECRET).
+                    parseClaimsJws(token).getBody();
+            return claims;
 
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }

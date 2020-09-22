@@ -33,7 +33,7 @@ public class InterceptConfiguration implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/user_register");  //注册
         excludePath.add("/user/login");     //登录
-        excludePath.add("/logout");         //登出
+        excludePath.add("/user/verify");    //权限验证
         excludePath.add("/static/**");      //静态资源
         excludePath.add("/assets/**");      //静态资源
 

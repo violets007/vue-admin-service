@@ -42,11 +42,6 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setContentType("application/json; charset=utf-8");
         PrintWriter out = null;
         try {
-           /* JSONObject json = new JSONObject();
-            json.put("success", "false");
-            json.put("msg", "认证失败");
-            json.put("code", "500");
-           */
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED));
             response.getWriter().append(objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED)));
@@ -55,7 +50,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             response.sendError(500);
             return false;
         }
-
 
         return false;
 

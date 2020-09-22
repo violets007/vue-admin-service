@@ -1,18 +1,18 @@
 package com.zixuan007.admin.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.zixuan007.admin.common.utils.TokenUtil;
 import com.zixuan007.admin.pojo.Result;
 import com.zixuan007.admin.pojo.ResultStatus;
 import com.zixuan007.admin.pojo.User;
 import com.zixuan007.admin.service.UserService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author zixuan007
@@ -27,18 +27,39 @@ public class UserController {
     /**
      * 校验当前账号密码是否登录
      *
-     * @param username
-     * @param password
+     * @param user
      * @return
      */
     @PostMapping("/login")
-    public Result<String> login(String username, String password) {
-        Map<String, Object> map = new HashMap<>();
-        User user = new User(username, password);
-        if (userService.login(user)) {
-            String token = TokenUtil.sign(user);
-            return Result.success(token);
+    public Result<HashMap<String, Object>> login(@RequestBody User user, HttpServletRequest request) {
+        //验证当前token是否可用
+        String token = request.getHeader("small-admin-token");
+        if (TokenUtil.verify(token)) {
+            //获取当前token的用户信息
+            Claims claims = TokenUtil.checkJWT(token);
+            long id = (long) claims.get("id");
+            String username = (String) claims.get("username");
+            HashMap<String, Object> userMap = new HashMap<>();
+            userMap.put("uid", id);
+            userMap.put("username", username);
+            return Result.success(userMap);
+        } else {
+            User resultUser = userService.login(user);
+            if (resultUser != null) {
+                try {
+                    token = TokenUtil.createToken(user);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                    return Result.failure(ResultStatus.UNAUTHORIZED);
+                }
+                HashMap<String, Object> userMap = new HashMap<>();
+                userMap.put("uid", resultUser.getId());
+                userMap.put("username", resultUser.getUsername());
+                userMap.put("token", token);
+                return Result.success(userMap);
+            }
         }
+
         return Result.failure(ResultStatus.UNAUTHORIZED);
     }
 
@@ -49,9 +70,13 @@ public class UserController {
      * @return
      */
     @GetMapping("/verify")
-    public Result<String> verify(HttpServletRequest request) {
-
-        return null;
+    public Result<Void> verify(HttpServletRequest request) {
+        String token = request.getHeader("small-admin-token");
+        boolean verify = TokenUtil.verify(token);
+        if (verify) {
+            return Result.success();
+        }
+        return Result.failure(ResultStatus.UNAUTHORIZED);
     }
 
     @GetMapping(value = "/getList")
