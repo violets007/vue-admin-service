@@ -46,7 +46,7 @@ public class UserController {
         } else {
             User resultUser = userService.login(user);
             if (resultUser != null) {
-                token = TokenUtil.createJwtToken(user);
+                token = TokenUtil.createJwtToken(resultUser);
                 HashMap<String, Object> userMap = new HashMap<>();
                 userMap.put("uid", resultUser.getId());
                 userMap.put("username", resultUser.getUsername());
