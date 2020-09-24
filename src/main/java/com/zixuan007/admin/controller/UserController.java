@@ -1,6 +1,6 @@
 package com.zixuan007.admin.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.zixuan007.admin.common.utils.TokenUtil;
 import com.zixuan007.admin.pojo.Result;
 import com.zixuan007.admin.pojo.ResultStatus;
@@ -75,10 +75,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/getList")
-    public List<User> getList() {
-
-        List userList = userService.getList();
-        return userList;
+    public Result<List> getList() {
+        return Result.success(userService.getList());
     }
 
     @GetMapping("/query/{id}")

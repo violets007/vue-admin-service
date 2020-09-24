@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -16,7 +17,7 @@ public class User implements Serializable {
     private long id;
     private String username;
     private String password;
-    private String birthday;
+    private Date birthday;
     @TableField("fullName")
     private String fullName;
 
@@ -27,4 +28,6 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
     }
+
+
 }

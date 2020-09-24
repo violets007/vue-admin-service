@@ -10,6 +10,7 @@ spring:
   # Jackson过滤掉空值
   jackson:
     default-property-inclusion: non_null
+    date-format: yyyy-MM-dd
 
 # 当前服务器占用的端口
 server:
@@ -18,6 +19,6 @@ server:
 #Mybatis-plus 使用
 mybatis-plus:
   type-aliases-package: com.zixuan007.admin.pojo
-  mapper-locations: classpath:mappers/*.xml
+  mapper-locations: classpath:mapper/*.xml
 
 
