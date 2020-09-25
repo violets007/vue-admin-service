@@ -1,7 +1,7 @@
 spring:
   application:
     name: vue-admin-service
-  ##数据库配置
+  # Mysql数据库链接
   datasource:
     url: jdbc:mysql://localhost:3306/test?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
@@ -16,9 +16,16 @@ spring:
 server:
   port: 8081
 
-#Mybatis-plus 使用
+# Mybatis-plus 使用
 mybatis-plus:
   type-aliases-package: com.zixuan007.admin.pojo
   mapper-locations: classpath:mapper/*.xml
+  global-config:
+    id-type: 2
+    db-column-underline: true
+    refresh-mapper: true
+    configuration:
+      map-underscore-to-camel-case: true
+      cache-enabled: true
 
 

@@ -1,7 +1,10 @@
 package com.zixuan007.admin.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+
 import com.zixuan007.admin.common.utils.TokenUtil;
+import com.zixuan007.admin.pojo.PageRequest;
 import com.zixuan007.admin.pojo.Result;
 import com.zixuan007.admin.pojo.ResultStatus;
 import com.zixuan007.admin.pojo.User;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -75,8 +79,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/getList")
-    public Result<List> getList() {
-        return Result.success(userService.getList());
+    public Result<IPage<User>> getList(PageRequest pageRequest) {
+        return Result.success(userService.getList(pageRequest));
     }
 
     @GetMapping("/query/{id}")
