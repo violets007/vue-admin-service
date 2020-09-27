@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author zixuan007
@@ -35,31 +33,37 @@ public class UserController {
      * @return
      */
     @PostMapping("/login")
-    public Result<HashMap<String, Object>> login(@RequestBody User user, HttpServletRequest request) {
+    public Result<HashMap<String, Object>> login(@RequestBody(required = false) User user, HttpServletRequest request) {
         //验证当前token是否可用
         String token = request.getHeader("small-admin-token");
+
         Claims claims = TokenUtil.parseToken(token);
-        if (claims != null) {
-            //获取当前token的用户信息
-            Integer id = (Integer) claims.get("uid");
-            String username = (String) claims.get("username");
-            HashMap<String, Object> userMap = new HashMap<>();
-            userMap.put("uid", id);
-            userMap.put("username", username);
-            return Result.success(userMap);
-        } else {
-            User resultUser = userService.login(user);
-            if (resultUser != null) {
-                token = TokenUtil.createJwtToken(resultUser);
-                HashMap<String, Object> userMap = new HashMap<>();
-                userMap.put("uid", resultUser.getId());
-                userMap.put("username", resultUser.getUsername());
-                userMap.put("token", token);
-                return Result.success(userMap);
-            }
+        User verifyUser = userService.login(user);
+        if (claims == null && verifyUser == null) {
+            return Result.failure(ResultStatus.UNAUTHORIZED);
         }
 
-        return Result.failure(ResultStatus.UNAUTHORIZED);
+        User resultUser = new User();
+        if (claims != null) {
+            Integer id = (Integer) claims.get("uid");
+            String username = (String) claims.get("username");
+            resultUser.setId(id);
+            resultUser.setUsername(username);
+        }
+
+
+        if (userService.login(user) != null) {
+            resultUser = verifyUser;
+        }
+
+        //生成token
+        String jwtToken = TokenUtil.createJwtToken(resultUser);
+        HashMap<String, Object> resultMap = new HashMap<String, Object>();
+        resultMap.put("id", resultUser.getId());
+        resultMap.put("username", resultUser.getUsername());
+        resultMap.put("token", jwtToken);
+
+        return Result.success(resultMap);
     }
 
     /**
