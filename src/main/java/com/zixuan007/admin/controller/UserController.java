@@ -7,7 +7,7 @@ import com.zixuan007.admin.common.utils.TokenUtil;
 import com.zixuan007.admin.pojo.PageRequest;
 import com.zixuan007.admin.pojo.Result;
 import com.zixuan007.admin.pojo.ResultStatus;
-import com.zixuan007.admin.pojo.User;
+import com.zixuan007.admin.pojo.bo.UserBO;
 import com.zixuan007.admin.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +29,21 @@ public class UserController {
     /**
      * 校验当前账号密码是否登录
      *
-     * @param user
+     * @param map
      * @return
      */
     @PostMapping("/login")
-    public Result<HashMap<String, Object>> login(@RequestBody(required = false) User user, HttpServletRequest request) {
+    public Result<HashMap<String, Object>> login(@RequestBody HashMap<String, String> map, HttpServletRequest request) {
         //验证当前token是否可用
         String token = request.getHeader("small-admin-token");
 
         Claims claims = TokenUtil.parseToken(token);
-        User verifyUser = userService.login(user);
+        UserBO verifyUser = userService.login(new UserBO(map.get("username"), map.get("password")));
         if (claims == null && verifyUser == null) {
             return Result.failure(ResultStatus.UNAUTHORIZED);
         }
 
-        User resultUser = new User();
+        UserBO resultUser = new UserBO();
         if (claims != null) {
             Integer id = (Integer) claims.get("uid");
             String username = (String) claims.get("username");
@@ -52,7 +52,7 @@ public class UserController {
         }
 
 
-        if (userService.login(user) != null) {
+        if (verifyUser != null) {
             resultUser = verifyUser;
         }
 
@@ -64,6 +64,23 @@ public class UserController {
         resultMap.put("token", jwtToken);
 
         return Result.success(resultMap);
+    }
+
+    /**
+     * 更新当前用户数据
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping("/saveUser")
+    public Result updateUser(@RequestBody UserBO user, HttpServletRequest request) {
+        user.setRemoteIp(request.getRemoteAddr());
+        return userService.updateUser(user) ? Result.success() : Result.failure(ResultStatus.NOT_MODIFIED);
+    }
+
+    @PostMapping("/delUser")
+    public Result delUser(@RequestBody HashMap<String, Integer> map) {
+        return userService.delUser(map.get("id")) ? Result.success() : Result.failure();
     }
 
     /**
@@ -83,12 +100,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/getList")
-    public Result<IPage<User>> getList(PageRequest pageRequest) {
+    public Result<IPage<UserBO>> getList(PageRequest pageRequest) {
         return Result.success(userService.getList(pageRequest));
     }
 
     @GetMapping("/query/{id}")
-    public User findByUid(@PathVariable("id") long id) {
+    public UserBO findByUid(@RequestParam("id") long id) {
         return userService.findUserById(id);
     }
 }

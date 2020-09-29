@@ -3,10 +3,10 @@
 <mapper namespace="com.zixuan007.admin.mapper.UserMapper">
 
 
-    <resultMap id="userMap" type="com.zixuan007.admin.pojo.User"></resultMap>
+    <resultMap id="userMap" type="com.zixuan007.admin.pojo.bo.UserBO"></resultMap>
 
 
-    <select id="findAll" resultType="user">
+    <select id="findAll" resultType="userBO">
         select id,username,password,birthday,fullName from user;
     </select>
 </mapper>

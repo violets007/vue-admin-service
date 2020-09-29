@@ -14,7 +14,8 @@ public enum ResultStatus {
     SUCCESS(HttpStatus.OK, 200, "ok"),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "BAD_REQUEST"),
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "internal server error"),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "Unauthorized");
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "Unauthorized"),
+    NOT_MODIFIED(HttpStatus.NOT_MODIFIED, 304, "Not Modified");
 
     ResultStatus(HttpStatus httpStatus, int code, String message) {
         this.httpStatus = httpStatus;

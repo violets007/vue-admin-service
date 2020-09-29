@@ -2,7 +2,7 @@ package com.zixuan007.admin.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zixuan007.admin.pojo.User;
+import com.zixuan007.admin.pojo.bo.UserBO;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -14,12 +14,12 @@ import java.util.List;
  */
 @Mapper
 
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<UserBO> {
 
     /**
      * 查询所有的用户数据
      *
      * @return
      */
-    List<User> findAll();
+    List<UserBO> findAll();
 }
