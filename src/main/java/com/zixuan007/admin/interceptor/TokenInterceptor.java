@@ -1,11 +1,12 @@
 package com.zixuan007.admin.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zixuan007.admin.common.anno.PassToken;
 import com.zixuan007.admin.common.utils.TokenUtil;
-import com.zixuan007.admin.pojo.Result;
-import com.zixuan007.admin.pojo.ResultStatus;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import com.zixuan007.admin.constant.Result;
+import com.zixuan007.admin.constant.ResultStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +24,26 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
             return true;
         }
 
-        response.setCharacterEncoding("utf-8");
+        boolean isHandlerMethod = handler instanceof HandlerMethod;
+        if (!isHandlerMethod) {
+            return true;
+        }
 
+        //不需要登录注解
+        boolean passToken = ((HandlerMethod) handler).getMethodAnnotation(PassToken.class) != null;
+        if (passToken) return true;
+
+        response.setCharacterEncoding("utf-8");
         String token = request.getHeader("small-admin-token");
         if (token != null) {
             boolean result = TokenUtil.parseToken(token) != null;
             if (result) {
-                System.out.println("检测到token信息: " + token);
                 return true;
             }
         }

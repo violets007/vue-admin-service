@@ -1,7 +1,7 @@
 package com.zixuan007.admin.common.utils;
 
 
-import com.zixuan007.admin.pojo.bo.UserBO;
+import com.zixuan007.admin.pojo.entity.UserEntity;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class TokenUtil {
     private static final String TOKEN_SECRET = "token123";      //密钥盐
     private static final Logger logger = LoggerFactory.getLogger(TokenUtil.class);
 
-    public static String createJwtToken(UserBO user) {
+    public static String createJwtToken(UserEntity user) {
         //设置失效时间
         //获取当前时间
         long now = System.currentTimeMillis();

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zixuan007.admin.mapper.UserMapper;
 import com.zixuan007.admin.pojo.PageRequest;
-import com.zixuan007.admin.pojo.bo.UserBO;
+import com.zixuan007.admin.pojo.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    public UserBO findUserById(long userId) {
+    public UserEntity findUserById(long userId) {
         return userMapper.selectById(userId);
     }
 
@@ -28,18 +28,18 @@ public class UserService {
      *
      * @return
      */
-    public IPage<UserBO> getList(PageRequest pageRequest) {
+    public IPage<UserEntity> getList(PageRequest pageRequest) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
 
-        IPage<UserBO> page = new Page<>(pageNum, pageSize);
-        QueryWrapper<UserBO> wrapper = new QueryWrapper<>();
+        IPage<UserEntity> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<UserEntity> wrapper = new QueryWrapper<>();
 
         return userMapper.selectPage(page, wrapper);
     }
 
-    public UserBO login(UserBO user) {
-        QueryWrapper<UserBO> userQueryWrapper = new QueryWrapper<>();
+    public UserEntity login(UserEntity user) {
+        QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
         userQueryWrapper.eq("username", user.getUsername());
         userQueryWrapper.eq("password", user.getPassword());
 
@@ -50,7 +50,7 @@ public class UserService {
         return userMapper.deleteById(uid) > 0 ? true : false;
     }
 
-    public boolean updateUser(UserBO user) {
+    public boolean updateUser(UserEntity user) {
         return userMapper.updateById(user) > 0 ? true : false;
     }
 }

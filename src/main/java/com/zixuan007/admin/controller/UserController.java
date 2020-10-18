@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import com.zixuan007.admin.common.utils.TokenUtil;
 import com.zixuan007.admin.pojo.PageRequest;
-import com.zixuan007.admin.pojo.Result;
-import com.zixuan007.admin.pojo.ResultStatus;
-import com.zixuan007.admin.pojo.bo.UserBO;
+import com.zixuan007.admin.constant.Result;
+import com.zixuan007.admin.constant.ResultStatus;
+import com.zixuan007.admin.pojo.entity.UserEntity;
 import com.zixuan007.admin.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,16 +38,17 @@ public class UserController {
         String token = request.getHeader("small-admin-token");
 
         Claims claims = TokenUtil.parseToken(token);
-        UserBO verifyUser = userService.login(new UserBO(map.get("username"), map.get("password")));
+        UserEntity verifyUser = userService.login(new UserEntity(map.get("username"), map.get("password")));
         if (claims == null && verifyUser == null) {
             return Result.failure(ResultStatus.UNAUTHORIZED);
         }
 
-        UserBO resultUser = new UserBO();
+
+        UserEntity resultUser = new UserEntity();
         if (claims != null) {
             Integer id = (Integer) claims.get("uid");
             String username = (String) claims.get("username");
-            resultUser.setId(id);
+            resultUser.setId(id.longValue());
             resultUser.setUsername(username);
         }
 
@@ -73,7 +74,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/saveUser")
-    public Result updateUser(@RequestBody UserBO user, HttpServletRequest request) {
+    public Result updateUser(@RequestBody UserEntity user, HttpServletRequest request) {
         user.setRemoteIp(request.getRemoteAddr());
         return userService.updateUser(user) ? Result.success() : Result.failure(ResultStatus.NOT_MODIFIED);
     }
@@ -100,12 +101,12 @@ public class UserController {
     }
 
     @GetMapping(value = "/getList")
-    public Result<IPage<UserBO>> getList(PageRequest pageRequest) {
+    public Result<IPage<UserEntity>> getList(PageRequest pageRequest) {
         return Result.success(userService.getList(pageRequest));
     }
 
     @GetMapping("/query/{id}")
-    public UserBO findByUid(@RequestParam("id") long id) {
+    public UserEntity findByUid(@RequestParam("id") long id) {
         return userService.findUserById(id);
     }
 }

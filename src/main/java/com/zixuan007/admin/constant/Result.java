@@ -1,4 +1,4 @@
-package com.zixuan007.admin.pojo;
+package com.zixuan007.admin.constant;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -73,7 +73,7 @@ public class Result<T> {
     /**
      * 业务异常返回业务代码,描述和返回的参数
      */
-    private static <T> Result<T> failure(ResultStatus resultStatus, T data) {
+    public static <T> Result<T> failure(ResultStatus resultStatus, T data) {
         if (resultStatus == null) {
             return new Result<T>(ResultStatus.INTERNAL_SERVER_ERROR, null);
         }

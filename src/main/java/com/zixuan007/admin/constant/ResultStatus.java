@@ -1,4 +1,4 @@
-package com.zixuan007.admin.pojo;
+package com.zixuan007.admin.constant;
 
 import lombok.Getter;
 import lombok.ToString;
