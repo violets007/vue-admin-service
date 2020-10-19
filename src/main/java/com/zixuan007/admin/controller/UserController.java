@@ -10,6 +10,8 @@ import com.zixuan007.admin.constant.ResultStatus;
 import com.zixuan007.admin.pojo.entity.UserEntity;
 import com.zixuan007.admin.service.UserService;
 import io.jsonwebtoken.Claims;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import java.util.HashMap;
 /**
  * @author zixuan007
  */
+@Api(value = "用户管理 - 用户信息管理api", tags = "用户管理 - 用户信息管理api")
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -32,6 +35,7 @@ public class UserController {
      * @param map
      * @return
      */
+    @ApiOperation(value = "用户登录验证", notes = "用户登录验证")
     @PostMapping("/login")
     public Result<HashMap<String, Object>> login(@RequestBody HashMap<String, String> map, HttpServletRequest request) {
         //验证当前token是否可用
@@ -79,6 +83,7 @@ public class UserController {
         return userService.updateUser(user) ? Result.success() : Result.failure(ResultStatus.NOT_MODIFIED);
     }
 
+    @ApiOperation(value = "删除用户信息", notes = "删除用户信息")
     @PostMapping("/delUser")
     public Result delUser(@RequestBody HashMap<String, Integer> map) {
         return userService.delUser(map.get("id")) ? Result.success() : Result.failure();
@@ -105,6 +110,8 @@ public class UserController {
         return Result.success(userService.getList(pageRequest));
     }
 
+
+    @ApiOperation(value = "查询用户信息", notes = "查询用户信息")
     @GetMapping("/query/{id}")
     public UserEntity findByUid(@RequestParam("id") long id) {
         return userService.findUserById(id);

@@ -1,15 +1,20 @@
 package com.zixuan007.admin.config;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Swagger2配置类
@@ -19,8 +24,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @date 2020/10/18
  */
 @Configuration
-@EnableSwagger2
+
 public class Swagger2 {
+
+    @Value("${swagger2.enable}")
+    private boolean enable;
+
     /**
      * 创建API应用
      * apiInfo() 增加API相关信息
@@ -36,21 +45,22 @@ public class Swagger2 {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.zixuan007.admin.controller"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .securitySchemes(securitySchemes())
+                .enable(enable);
     }
 
-    /**
-     * 创建该API的基本信息（这些基本信息会展现在文档页面中）
-     * 访问地址：http://项目实际地址/swagger-ui.html
-     *
-     * @return
-     */
+    private List<ApiKey> securitySchemes() {
+        List<ApiKey> apiKeyList = new ArrayList();
+        apiKeyList.add(new ApiKey("iview-admin-token", "x-auth-token", "header"));
+        return apiKeyList;
+    }
+
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("iview-admin 权限管理后天")
-                .description("")
-                .termsOfServiceUrl("")
-                .contact("a1186019009@gmail.com")
+                .title("后台管理系统接口")
+                .description("基础接口")
+                .termsOfServiceUrl("localhost:8081/iview-admin/swagger-ui.html")
                 .version("1.0")
                 .build();
     }

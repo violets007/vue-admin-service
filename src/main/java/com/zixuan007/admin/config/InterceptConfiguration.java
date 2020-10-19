@@ -36,8 +36,12 @@ public class InterceptConfiguration implements WebMvcConfigurer {
         excludePath.add("/user/verify");    //权限验证
         excludePath.add("/static/**");      //静态资源
         excludePath.add("/assets/**");      //静态资源
+        excludePath.add("/swagger-ui.html");      //静态资源
+        excludePath.add("/swagger-resources/**");      //静态资源
+        excludePath.add("/v2/api-docs");      //静态资源
+        excludePath.add("/webjars/**");      //静态资源
 
-        System.out.println("可以过权限的请求: " + excludePath);
+
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);

@@ -12,11 +12,16 @@ spring:
     default-property-inclusion: non_null
 
 
+
 # 当前服务器占用的端口
 server:
   port: 8081
   servlet:
     context-path: /iview-admin/
+
+# swagger2配置
+swagger2:
+  enable: true
 
 # Mybatis-plus 使用
 mybatis-plus:
