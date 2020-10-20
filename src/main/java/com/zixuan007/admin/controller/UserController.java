@@ -105,7 +105,7 @@ public class UserController {
         return Result.failure(ResultStatus.UNAUTHORIZED);
     }
 
-    @GetMapping(value = "/getList")
+    @GetMapping(value = "/list")
     public Result<IPage<UserEntity>> getList(PageRequest pageRequest) {
         return Result.success(userService.getList(pageRequest));
     }

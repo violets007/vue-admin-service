@@ -14,7 +14,7 @@ import java.util.Date;
  * @author zixuan007
  */
 @Data
-@TableName("va_user")
+@TableName("t_user")
 public class UserEntity extends BaseEntity implements Serializable {
     /**
      * 用户名
@@ -28,6 +28,14 @@ public class UserEntity extends BaseEntity implements Serializable {
      * 生日
      */
     private Date birthday;
+    /**
+     * 生日
+     */
+    private String phone;
+    /**
+     * 生日
+     */
+    private String email;
     /**
      * 真实姓名
      */

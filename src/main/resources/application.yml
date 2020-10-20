@@ -10,7 +10,7 @@ spring:
   # Jackson过滤掉空值
   jackson:
     default-property-inclusion: non_null
-
+    date-format: yyyy-MM-dd HH:mm:ss
 
 
 # 当前服务器占用的端口

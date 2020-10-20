@@ -40,7 +40,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         if (passToken) return true;
 
         response.setCharacterEncoding("utf-8");
-        String token = request.getHeader("small-admin-token");
+        String token = request.getHeader("iview-admin-token");
         if (token != null) {
             boolean result = TokenUtil.parseToken(token) != null;
             if (result) {
