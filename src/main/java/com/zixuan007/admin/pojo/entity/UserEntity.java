@@ -12,6 +12,7 @@ import java.util.Date;
  * 实体模型数据Bean
  *
  * @author zixuan007
+ * @date 2020/10/21
  */
 @Data
 @TableName("t_user")
