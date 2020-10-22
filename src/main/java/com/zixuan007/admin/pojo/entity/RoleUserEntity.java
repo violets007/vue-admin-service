@@ -1,8 +1,9 @@
 package com.zixuan007.admin.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Table;
+
 
 /**
  * 角色用户关联对象
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  * @date 2020/10/18
  */
 @Data
-@Table(name = "va_role_user")
+@TableName("t_role_user")
 public class RoleUserEntity extends BaseEntity {
 
     private long roleId;

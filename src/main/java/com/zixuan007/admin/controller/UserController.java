@@ -73,16 +73,17 @@ public class UserController {
 
     /**
      * 用户名查询
+     *
      * @param pageNum
      * @param pageSize
      * @param username
      * @return
      */
     @ApiOperation(value = "用户名查询", notes = "用户名查询")
-    @GetMapping("/queryList")
-    public Result<IPage<UserEntity>> queryList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                               @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize,
-                                               String username) {
+    @GetMapping("/query")
+    public Result<IPage<UserEntity>> queryUserByName(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                                     @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize,
+                                                     @RequestParam(value = "username", required = false, defaultValue = "") String username) {
         if (username == null) return Result.failure();
         return Result.success(userService.queryList(pageNum, pageSize, username));
     }

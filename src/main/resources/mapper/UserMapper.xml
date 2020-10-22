@@ -7,6 +7,6 @@
 
 
     <update id="updateUser" parameterType="UserEntity">
-        update t_user set phone = #{user.phone},email = #{user.email},fullName = #{user.fullName} where id = #{user.id}
+        update t_user set phone = #{user.phone},email = #{user.email},full_name = #{user.fullName},status = #{user.status} where id = #{user.id}
     </update>
 </mapper>

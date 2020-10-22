@@ -1,8 +1,8 @@
 package com.zixuan007.admin.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Table;
 
 /**
  * 角色
@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * @date 2020/10/18
  */
 @Data
-@Table(name = "va_role")
+@TableName("t_role")
 public class RoleEntity extends BaseEntity {
     /**
      * 角色名称
@@ -20,5 +20,5 @@ public class RoleEntity extends BaseEntity {
     /**
      * 角色描述
      */
-    private String remark;
+    private String description;
 }

@@ -9,6 +9,7 @@ import com.zixuan007.admin.pojo.PageRequest;
 import com.zixuan007.admin.pojo.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 /**
  * @author apple
@@ -56,7 +57,8 @@ public class UserService {
 
     public IPage<UserEntity> queryList(int pageNum, int pageSize, String username) {
         QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.eq("username", username);
+        if (!StringUtils.isEmpty(username))
+            userQueryWrapper.like("username", username);
 
         IPage<UserEntity> page = new Page<>(pageNum, pageSize);
         return userMapper.selectPage(page, userQueryWrapper);

@@ -1,6 +1,7 @@
 package com.zixuan007.admin.pojo.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -34,9 +35,13 @@ public class UserEntity extends BaseEntity implements Serializable {
      */
     private String phone;
     /**
-     * 生日
+     * 邮箱
      */
     private String email;
+    /**
+     * 状态
+     */
+    private boolean status;
     /**
      * 真实姓名
      */

@@ -1,8 +1,9 @@
 package com.zixuan007.admin.pojo.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.Table;
+
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
  * @date 2020/10/18
  */
 @Data
-@Table(name = "va_privilege")
+@TableName("t_privilege")
 public class PrivilegeEntity {
 
     private String parentKey;
