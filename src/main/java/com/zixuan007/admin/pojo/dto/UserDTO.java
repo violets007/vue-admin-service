@@ -17,5 +17,4 @@ public class UserDTO {
     private String username;
     private String headPortrait;
     private List<RoleEntity> roleEntity;
-
 }

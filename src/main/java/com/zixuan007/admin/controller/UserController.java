@@ -72,21 +72,53 @@ public class UserController {
     }
 
     /**
+     * 用户名查询
+     * @param pageNum
+     * @param pageSize
+     * @param username
+     * @return
+     */
+    @ApiOperation(value = "用户名查询", notes = "用户名查询")
+    @GetMapping("/queryList")
+    public Result<IPage<UserEntity>> queryList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                               @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize,
+                                               String username) {
+        if (username == null) return Result.failure();
+        return Result.success(userService.queryList(pageNum, pageSize, username));
+    }
+
+    /**
+     *
+     * @param userEntity
+     * @return
+     */
+    @ApiOperation(value = "插入用户信息", notes = "插入用户信息")
+    @PostMapping("/insertUser")
+    public Result addDateUser(@RequestBody UserEntity userEntity){
+        return userService.insertUser(userEntity) ? Result.success() : Result.failure();
+    }
+
+    /**
      * 更新当前用户数据
      *
      * @param user
      * @return
      */
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
     @PostMapping("/saveUser")
-    public Result updateUser(@RequestBody UserEntity user, HttpServletRequest request) {
-        user.setRemoteIp(request.getRemoteAddr());
+    public Result updateUser(@RequestBody UserEntity user) {
         return userService.updateUser(user) ? Result.success() : Result.failure(ResultStatus.NOT_MODIFIED);
     }
 
+    /**
+     * 根据ID删除用户数据
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "删除用户信息", notes = "删除用户信息")
-    @PostMapping("/delUser")
-    public Result delUser(@RequestBody HashMap<String, Integer> map) {
-        return userService.delUser(map.get("id")) ? Result.success() : Result.failure();
+    @GetMapping("/delUser")
+    public Result delUser(Integer id) {
+        return userService.delUser(id) ? Result.success() : Result.failure();
     }
 
     /**
@@ -95,9 +127,10 @@ public class UserController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "验证用户Token", notes = "验证用户Token")
     @GetMapping("/verify")
     public Result<Void> verify(HttpServletRequest request) {
-        String token = request.getHeader("small-admin-token");
+        String token = request.getHeader("iview-admin-token");
         boolean verify = TokenUtil.parseToken(token) != null;
         if (verify) {
             return Result.success();
@@ -105,6 +138,7 @@ public class UserController {
         return Result.failure(ResultStatus.UNAUTHORIZED);
     }
 
+    @ApiOperation(value = "查询用户列表", notes = "查询用户列表")
     @GetMapping(value = "/list")
     public Result<IPage<UserEntity>> getList(PageRequest pageRequest) {
         return Result.success(userService.getList(pageRequest));

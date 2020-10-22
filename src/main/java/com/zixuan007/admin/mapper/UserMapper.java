@@ -4,6 +4,7 @@ package com.zixuan007.admin.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zixuan007.admin.pojo.entity.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface UserMapper extends BaseMapper<UserEntity> {
      * @return
      */
     List<UserEntity> findAll();
+
+    int updateUser(@Param("user") UserEntity user);
 }

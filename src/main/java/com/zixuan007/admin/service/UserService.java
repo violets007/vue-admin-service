@@ -51,6 +51,18 @@ public class UserService {
     }
 
     public boolean updateUser(UserEntity user) {
-        return userMapper.updateById(user) > 0 ? true : false;
+        return userMapper.updateUser(user) > 0 ? true : false;
+    }
+
+    public IPage<UserEntity> queryList(int pageNum, int pageSize, String username) {
+        QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("username", username);
+
+        IPage<UserEntity> page = new Page<>(pageNum, pageSize);
+        return userMapper.selectPage(page, userQueryWrapper);
+    }
+
+    public boolean insertUser(UserEntity userEntity) {
+        return userMapper.insert(userEntity) > 0 ? true : false;
     }
 }

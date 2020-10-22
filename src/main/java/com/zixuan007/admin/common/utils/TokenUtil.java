@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class TokenUtil {
 
-    private static final long EXPIRE_TIME = 15 * 60 * 1000;     //token过期时间暂定为15分钟
+    private static final long EXPIRE_TIME = 60 * 60 * 1000;     //token过期时间暂定为15分钟
     private static final String TOKEN_SECRET = "token123";      //密钥盐
     private static final Logger logger = LoggerFactory.getLogger(TokenUtil.class);
 

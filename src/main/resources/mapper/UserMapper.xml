@@ -6,7 +6,7 @@
     <resultMap id="userMap" type="com.zixuan007.admin.pojo.entity.UserEntity"></resultMap>
 
 
-    <select id="findAll" resultType="UserEntity">
-        select id,username,password,birthday,fullName from user;
-    </select>
+    <update id="updateUser" parameterType="UserEntity">
+        update t_user set phone = #{user.phone},email = #{user.email},fullName = #{user.fullName} where id = #{user.id}
+    </update>
 </mapper>
