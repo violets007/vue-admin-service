@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * @author apple
  */
@@ -27,7 +29,7 @@ public class RoleService {
 
         IPage<RoleEntity> page = new Page<>(pageNum, pageSize);
         QueryWrapper<RoleEntity> wrapper = new QueryWrapper<>();
-        if (!StringUtils.isEmpty(roleName)) wrapper.like("roleName", roleName);
+        if (!StringUtils.isEmpty(roleName)) wrapper.like("role_name", roleName);
         return roleMapper.selectPage(page, wrapper);
     }
 
@@ -36,6 +38,8 @@ public class RoleService {
     }
 
     public boolean insertRole(RoleEntity roleEntity) {
+        roleEntity.setCreateTime(new Date());
+        roleEntity.setUpdateTime(new Date());
         return roleMapper.insert(roleEntity) > 0;
     }
 

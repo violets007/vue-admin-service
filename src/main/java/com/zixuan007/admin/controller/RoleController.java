@@ -44,8 +44,8 @@ public class RoleController {
      */
     @ApiOperation(value = "根据角色名称查询", notes = "根据角色名称查询")
     @GetMapping(value = "/roleNameList")
-    public Result<IPage<RoleEntity>> getRoleByName(PageRequest pageRequest) {
-        return Result.success(roleService.getRoleByName(pageRequest, null));
+    public Result<IPage<RoleEntity>> getRoleByName(PageRequest pageRequest,String roleName) {
+        return Result.success(roleService.getRoleByName(pageRequest, roleName));
     }
 
     /**

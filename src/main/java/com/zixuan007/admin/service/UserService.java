@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Date;
+
 /**
  * @author apple
  */
@@ -24,11 +26,6 @@ public class UserService {
         return userMapper.selectById(userId);
     }
 
-    /**
-     * 分页用户数据
-     *
-     * @return
-     */
     public IPage<UserEntity> getList(PageRequest pageRequest) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
@@ -65,6 +62,8 @@ public class UserService {
     }
 
     public boolean insertUser(UserEntity userEntity) {
+        userEntity.setUpdateTime(new Date()); // 插入更新时间默认为当前时间
+        userEntity.setCreateTime(new Date()); // 插入创建时间默认为当前时间
         return userMapper.insert(userEntity) > 0 ? true : false;
     }
 }
