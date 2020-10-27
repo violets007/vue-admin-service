@@ -52,8 +52,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         PrintWriter out = null;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED));
-            response.getWriter().append(objectMapper.writeValueAsString(Result.failure(ResultStatus.UNAUTHORIZED)));
+            objectMapper.writeValueAsString(Result.failure(ResultStatus.LOGIN_ERROR));
+            response.getWriter().append(objectMapper.writeValueAsString(Result.failure(ResultStatus.LOGIN_ERROR)));
         } catch (Exception e) {
             e.printStackTrace();
             response.sendError(500);

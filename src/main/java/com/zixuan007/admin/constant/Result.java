@@ -39,6 +39,13 @@ public class Result<T> {
     }
 
     /**
+     * 业务成功返回业务代码
+     */
+    public static <T> Result<T> success(ResultStatus resultStatus) {
+        return success(resultStatus, null);
+    }
+
+    /**
      * 业务成功返回业务代码,描述和返回的参数
      */
     public static <T> Result<T> success(T data) {

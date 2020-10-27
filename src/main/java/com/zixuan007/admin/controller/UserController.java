@@ -44,7 +44,7 @@ public class UserController {
         Claims claims = TokenUtil.parseToken(token);
         UserEntity verifyUser = userService.login(new UserEntity(map.get("username"), map.get("password")));
         if (claims == null && verifyUser == null) {
-            return Result.failure(ResultStatus.UNAUTHORIZED);
+            return Result.failure(ResultStatus.LOGIN_ERROR);
         }
 
 
@@ -89,13 +89,12 @@ public class UserController {
     }
 
     /**
-     *
      * @param userEntity
      * @return
      */
     @ApiOperation(value = "插入用户信息", notes = "插入用户信息")
     @PostMapping("/insertUser")
-    public Result addDateUser(@RequestBody UserEntity userEntity){
+    public Result addDateUser(@RequestBody UserEntity userEntity) {
         return userService.insertUser(userEntity) ? Result.success() : Result.failure();
     }
 
@@ -113,6 +112,7 @@ public class UserController {
 
     /**
      * 根据ID删除用户数据
+     *
      * @param id
      * @return
      */
@@ -136,7 +136,7 @@ public class UserController {
         if (verify) {
             return Result.success();
         }
-        return Result.failure(ResultStatus.UNAUTHORIZED);
+        return Result.success(ResultStatus.LOGIN_ERROR);
     }
 
     @ApiOperation(value = "查询用户列表", notes = "查询用户列表")
