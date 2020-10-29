@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zixuan007.admin.mapper.MenuMapper">
+
+
+    <resultMap id="menuMap" type="com.zixuan007.admin.pojo.entity.MenuEntity"></resultMap>
+
+    <!-- 更新菜单 -->
+    <update id="updateMenu" parameterType="MenuEntity">
+        update t_menu
+        set parent_id = #{parentId},
+        name = #{name},
+        url = #{url},
+        accredit = #{accredit},
+        type = #{type},
+        menuIcon = #{menuIcon},
+        sort = #{sort}
+        where id = #{id}
+    </update>
+
+
+</mapper>

@@ -23,6 +23,10 @@ public class RoleService {
     private RoleMapper roleMapper;
 
 
+    public IPage<RoleEntity> getRoleList(PageRequest pageRequest) {
+        return getRoleByName(pageRequest, null);
+    }
+
     public IPage<RoleEntity> getRoleByName(PageRequest pageRequest, String roleName) {
         int pageNum = pageRequest.getPageNum();
         int pageSize = pageRequest.getPageSize();
