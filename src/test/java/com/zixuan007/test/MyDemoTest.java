@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = VueAdminApplication.class)
 public class MyDemoTest {
@@ -22,6 +24,9 @@ public class MyDemoTest {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private MenuMapper menuMapper;
 
     /**
      * 测试获取指定用户数据
@@ -46,10 +51,16 @@ public class MyDemoTest {
     @Test
     public void testInsertMenu() {
         MenuEntity menuEntity = new MenuEntity();
-        menuEntity.setName("用户管理");
-        menuEntity.setUrl("/user");
-        menuEntity.setAccredit("");
-        menuEntity.setType(1);
-        menuEntity.setMenuIcon("");
+        menuEntity.setParentId(1);
+        menuEntity.setName("菜单管理");
+        menuEntity.setUrl("/menu");
+        menuEntity.setIcon("custom-menu iconfont");
+        menuEntity.setSort(3);
+        menuEntity.setType(2);
+        menuEntity.setStatus(true);
+        menuEntity.setCreateTime(new Date());
+        menuEntity.setUpdateTime(new Date());
+
+        menuMapper.insert(menuEntity);
     }
 }

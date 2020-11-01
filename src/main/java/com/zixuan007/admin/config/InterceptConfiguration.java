@@ -31,15 +31,15 @@ public class InterceptConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //排除拦截器的列表
         List<String> excludePath = new ArrayList<>();
-        excludePath.add("/user_register");  //注册
-        excludePath.add("/user/login");     //登录
-        excludePath.add("/user/verify");    //权限验证
-        excludePath.add("/static/**");      //静态资源
-        excludePath.add("/assets/**");      //静态资源
-        excludePath.add("/swagger-ui.html");      //静态资源
+        excludePath.add("/user_register");              //注册
+        excludePath.add("/user/login");                 //登录
+        excludePath.add("/user/verify");                //权限验证
+        excludePath.add("/static/**");                  //静态资源
+        excludePath.add("/assets/**");                  //静态资源
+        excludePath.add("/swagger-ui.html");            //静态资源
         excludePath.add("/swagger-resources/**");      //静态资源
-        excludePath.add("/v2/api-docs");      //静态资源
-        excludePath.add("/webjars/**");      //静态资源
+        excludePath.add("/v2/api-docs");                //静态资源
+        excludePath.add("/webjars/**");                 //静态资源
 
 
         registry.addInterceptor(tokenInterceptor)

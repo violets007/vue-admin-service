@@ -25,7 +25,7 @@ public class Result<T> {
      */
     private T data;
 
-    private Result(ResultStatus resultStatus, T data) {
+    public Result(ResultStatus resultStatus, T data) {
         this.code = resultStatus.getCode();
         this.message = resultStatus.getMessage();
         this.data = data;

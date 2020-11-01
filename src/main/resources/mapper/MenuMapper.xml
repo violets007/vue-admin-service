@@ -8,13 +8,13 @@
     <!-- 更新菜单 -->
     <update id="updateMenu" parameterType="MenuEntity">
         update t_menu
-        set parent_id = #{parentId},
-        name = #{name},
+        set name = #{name},
         url = #{url},
-        accredit = #{accredit},
+        icon = #{icon},
+        sort = #{sort},
         type = #{type},
-        menuIcon = #{menuIcon},
-        sort = #{sort}
+        status = #{status},
+        update_time = NOW()
         where id = #{id}
     </update>
 

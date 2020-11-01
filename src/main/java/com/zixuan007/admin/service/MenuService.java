@@ -51,4 +51,14 @@ public class MenuService {
         Page<MenuEntity> page = new Page<MenuEntity>(pageRequest.getPageNum(), pageRequest.getPageSize());
         return menuMapper.selectPage(page, new QueryWrapper<MenuEntity>());
     }
+
+    /**
+     * 更新菜单内容
+     *
+     * @param menuEntity
+     * @return
+     */
+    public boolean updateMenu(MenuEntity menuEntity) {
+        return menuMapper.updateMenu(menuEntity) > 0 ? true : false;
+    }
 }
