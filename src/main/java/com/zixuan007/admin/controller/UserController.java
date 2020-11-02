@@ -72,6 +72,23 @@ public class UserController {
     }
 
     /**
+     * 验证当前携带的token是否可用
+     *
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "验证用户Token", notes = "验证用户Token")
+    @GetMapping("/verify")
+    public Result<Void> verify(HttpServletRequest request) {
+        String token = request.getHeader("iview-admin-token");
+        boolean verify = TokenUtil.parseToken(token) != null;
+        if (verify) {
+            return Result.success();
+        }
+        return Result.success(ResultStatus.LOGIN_ERROR);
+    }
+
+    /**
      * 用户名查询
      *
      * @param pageNum
@@ -92,11 +109,11 @@ public class UserController {
      * @param userEntity
      * @return
      */
-    @ApiOperation(value = "插入用户信息", notes = "插入用户信息")
+    /*@ApiOperation(value = "插入用户信息", notes = "插入用户信息")
     @PostMapping("/insertUser")
     public Result addDateUser(@RequestBody UserEntity userEntity) {
         return userService.insertUser(userEntity) ? Result.success() : Result.failure();
-    }
+    }*/
 
     /**
      * 更新当前用户数据
@@ -104,11 +121,11 @@ public class UserController {
      * @param user
      * @return
      */
-    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
+    /*@ApiOperation(value = "更新用户信息", notes = "更新用户信息")
     @PostMapping("/saveUser")
     public Result updateUser(@RequestBody UserEntity user) {
         return userService.updateUser(user) ? Result.success() : Result.failure(ResultStatus.NOT_MODIFIED);
-    }
+    }*/
 
     /**
      * 根据ID删除用户数据
@@ -116,39 +133,24 @@ public class UserController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "删除用户信息", notes = "删除用户信息")
+    /*@ApiOperation(value = "删除用户信息", notes = "删除用户信息")
     @GetMapping("/delUser")
     public Result delUser(Integer id) {
         return userService.delUser(id) ? Result.success() : Result.failure();
-    }
+    }*/
 
-    /**
-     * 验证当前携带的token是否可用
-     *
-     * @param request
-     * @return
-     */
-    @ApiOperation(value = "验证用户Token", notes = "验证用户Token")
-    @GetMapping("/verify")
-    public Result<Void> verify(HttpServletRequest request) {
-        String token = request.getHeader("iview-admin-token");
-        boolean verify = TokenUtil.parseToken(token) != null;
-        if (verify) {
-            return Result.success();
-        }
-        return Result.success(ResultStatus.LOGIN_ERROR);
-    }
 
-    @ApiOperation(value = "查询用户列表", notes = "查询用户列表")
+
+    /*@ApiOperation(value = "查询用户列表", notes = "查询用户列表")
     @GetMapping(value = "/list")
     public Result<IPage<UserEntity>> getList(PageRequest pageRequest) {
         return Result.success(userService.getList(pageRequest));
-    }
+    }*/
 
 
-    @ApiOperation(value = "查询用户信息", notes = "查询用户信息")
+    /*@ApiOperation(value = "查询用户信息", notes = "查询用户信息")
     @GetMapping("/query/{id}")
     public UserEntity findByUid(@RequestParam("id") long id) {
         return userService.findUserById(id);
-    }
+    }*/
 }

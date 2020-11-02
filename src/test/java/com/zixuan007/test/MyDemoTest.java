@@ -3,6 +3,7 @@ package com.zixuan007.test;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zixuan007.admin.VueAdminApplication;
 import com.zixuan007.admin.mapper.MenuMapper;
+import com.zixuan007.admin.mapper.RoleUserMapper;
 import com.zixuan007.admin.pojo.PageRequest;
 import com.zixuan007.admin.pojo.entity.MenuEntity;
 import com.zixuan007.admin.service.MenuService;
@@ -27,6 +28,9 @@ public class MyDemoTest {
 
     @Autowired
     private MenuMapper menuMapper;
+
+    @Autowired
+    private RoleUserMapper roleUserMapper;
 
     /**
      * 测试获取指定用户数据
@@ -62,5 +66,15 @@ public class MyDemoTest {
         menuEntity.setUpdateTime(new Date());
 
         menuMapper.insert(menuEntity);
+    }
+
+    @Test
+    public void testInsertRoleUser() {
+        System.out.println(roleUserMapper.insertRoleUser(13, 1));
+    }
+
+    @Test
+    public void testqueryRoleIdByUid() {
+        System.out.println(roleUserMapper.deleteByUidAndRid(13, 2));
     }
 }

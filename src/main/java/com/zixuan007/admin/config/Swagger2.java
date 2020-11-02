@@ -24,7 +24,6 @@ import java.util.List;
  * @date 2020/10/18
  */
 @Configuration
-
 public class Swagger2 {
 
     @Value("${swagger2.enable}")

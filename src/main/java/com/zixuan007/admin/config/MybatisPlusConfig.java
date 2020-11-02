@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
+ * 分页插件拦截器
+ *
  * @author zixuan007
+ * @Date 2020/11/2
  */
 @EnableTransactionManagement
 @Configuration
@@ -19,6 +22,8 @@ public class MybatisPlusConfig {
      */
     @Bean
     public PaginationInterceptor paginationInterceptor() {
-        return new PaginationInterceptor();
+        PaginationInterceptor page = new PaginationInterceptor();
+        page.setDialectType("mysql");
+        return page;
     }
 }

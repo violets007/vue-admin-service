@@ -10,6 +10,7 @@ import com.zixuan007.admin.service.MenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +70,7 @@ public class MenuController {
      * @return
      */
     @ApiOperation(value = "更新菜单信息", notes = "插入菜单信息")
-    @PostMapping("/update")
+    @PostMapping("/delete")
     public Result deleteById(int id) {
         return menuService.deleteMenu(id) ? new Result(ResultStatus.SUCCESS, null) : new Result(ResultStatus.NOT_MODIFIED, null);
     }

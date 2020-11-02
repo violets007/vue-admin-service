@@ -64,6 +64,7 @@ public class UserService {
     public boolean insertUser(UserEntity userEntity) {
         userEntity.setUpdateTime(new Date()); // 插入更新时间默认为当前时间
         userEntity.setCreateTime(new Date()); // 插入创建时间默认为当前时间
+
         return userMapper.insert(userEntity) > 0 ? true : false;
     }
 }

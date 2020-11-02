@@ -17,11 +17,20 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<UserEntity> {
 
     /**
-     * 查询所有的用户数据
+     * 查询用户列表
      *
      * @return
      */
-    List<UserEntity> findAll();
+    List<UserEntity> queryUserList();
 
+
+    /**
+     * 更新用户数据
+     *
+     * @param user
+     * @return
+     */
     int updateUser(@Param("user") UserEntity user);
+
+
 }

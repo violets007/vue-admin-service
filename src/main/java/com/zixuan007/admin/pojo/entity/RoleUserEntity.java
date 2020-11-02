@@ -17,5 +17,4 @@ public class RoleUserEntity extends BaseEntity {
 
     private long roleId;
     private long userId;
-
 }

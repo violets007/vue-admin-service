@@ -5,8 +5,15 @@
 
     <resultMap id="userMap" type="com.zixuan007.admin.pojo.entity.UserEntity"></resultMap>
 
+    <!--  查询用户数据  -->
+    <select id="queryUserList" resultType="UserDTO">
+        select id,username,head_portrait,birthday,phone,status,email,full_name,remote_ip from t_role_user
+    </select>
+
 
     <update id="updateUser" parameterType="UserEntity">
         update t_user set phone = #{user.phone},email = #{user.email},full_name = #{user.fullName},status = #{user.status} where id = #{user.id}
     </update>
+
+
 </mapper>

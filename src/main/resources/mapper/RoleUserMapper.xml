@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zixuan007.admin.mapper.RoleUserMapper">
+
+
+    <resultMap id="roleUserMap" type="com.zixuan007.admin.pojo.entity.RoleUserEntity"></resultMap>
+
+    <!-- 关联用户和角色关系   -->
+    <insert id="insertRoleUser" parameterType="int">
+        insert into t_role_user(user_id,role_id) value (#{uid},#{rid})
+    </insert>
+
+    <!-- 根据用户ID查询所有角色ID   -->
+    <select id="queryRoleIdByUid" parameterType="int" resultType="int">
+        select role_id from t_role_user where user_id = #{uid}
+    </select>
+
+    <!-- 移除指定用户的所有角色   -->
+    <delete id="deleteByUid" parameterType="int">
+        delete from t_role_user where user_id = #{uid}
+    </delete>
+
+    <!--  移除当前角色所绑定的用户  -->
+    <delete id="deleteByRid" parameterType="int">
+        delete from t_role_user where role_id = #{rid}
+    </delete>
+
+    <!--  删除当前用户所关联的角色  -->
+    <delete id="deleteByUidAndRid" parameterType="int">
+        delete from t_role_user where user_id = #{uid} and role_id = #{rid}
+    </delete>
+
+    <!--  删除角色用户通过ID  -->
+    <select id="queryRoleNameByUid" parameterType="int" resultType="string">
+        select role_name from t_role as role LEFT JOIN t_role_user userRole on userRole.user_id = #{uid} where userRole.role_id = role.id
+    </select>
+
+
+</mapper>
