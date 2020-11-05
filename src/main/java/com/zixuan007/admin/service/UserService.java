@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zixuan007.admin.mapper.UserMapper;
 import com.zixuan007.admin.pojo.PageRequest;
+import com.zixuan007.admin.pojo.dto.UserDTO;
 import com.zixuan007.admin.pojo.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 
 /**
+ * 用户业务
+ *
  * @author apple
  */
 @Service
@@ -52,13 +55,28 @@ public class UserService {
         return userMapper.updateUser(user) > 0 ? true : false;
     }
 
-    public IPage<UserEntity> queryList(int pageNum, int pageSize, String username) {
-        QueryWrapper<UserEntity> userQueryWrapper = new QueryWrapper<>();
-        if (!StringUtils.isEmpty(username))
-            userQueryWrapper.like("username", username);
+    /**
+     * 查询用户列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    public IPage<UserDTO> queryList(int pageNum, int pageSize) {
+        return userMapper.queryList(new Page<UserDTO>(pageNum, pageSize));
+    }
 
-        IPage<UserEntity> page = new Page<>(pageNum, pageSize);
-        return userMapper.selectPage(page, userQueryWrapper);
+    /**
+     * 根据用户名进行分页
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param username
+     * @return
+     */
+    public IPage<UserDTO> queryListByName(int pageNum, int pageSize, String username) {
+        Page<UserDTO> page = new Page<>(pageNum, pageSize);
+        return userMapper.queryListByName(page, username);
     }
 
     public boolean insertUser(UserEntity userEntity) {

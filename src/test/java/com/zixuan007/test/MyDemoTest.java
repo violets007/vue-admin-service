@@ -5,6 +5,7 @@ import com.zixuan007.admin.VueAdminApplication;
 import com.zixuan007.admin.mapper.MenuMapper;
 import com.zixuan007.admin.mapper.RoleUserMapper;
 import com.zixuan007.admin.pojo.PageRequest;
+import com.zixuan007.admin.pojo.dto.UserDTO;
 import com.zixuan007.admin.pojo.entity.MenuEntity;
 import com.zixuan007.admin.service.MenuService;
 import com.zixuan007.admin.service.UserService;
@@ -76,5 +77,13 @@ public class MyDemoTest {
     @Test
     public void testqueryRoleIdByUid() {
         System.out.println(roleUserMapper.deleteByUidAndRid(13, 2));
+    }
+
+    @Test
+    public void testUser() {
+        IPage<UserDTO> page = userService.queryListByName(1, 10, "zixuan007");
+        System.out.println(page.getTotal());
+        System.out.println(page.getPages());
+        System.out.println(page.getRecords());
     }
 }

@@ -5,14 +5,32 @@
 
     <resultMap id="userMap" type="com.zixuan007.admin.pojo.entity.UserEntity"></resultMap>
 
+
     <!--  查询用户数据  -->
-    <select id="queryUserList" resultType="UserDTO">
-        select id,username,head_portrait,birthday,phone,status,email,full_name,remote_ip from t_role_user
+    <select id="queryList" resultType="UserDTO">
+        select id,username,head_portrait,birthday,phone,status,email,full_name,remote_ip from t_user
     </select>
 
+    <!--  根据用户名称查询用户列表  -->
+    <select id="queryListByName" resultType="UserDTO" parameterType="string">
+        <bind name="likeName" value="'%' + username + '%'"/>
+        select
+        id,username,head_portrait,birthday,phone,status,email,full_name,remote_ip
+        from t_user
+        <where>
+            <if test="username != null and username != ''">
+                username like #{likeName}
+            </if>
+        </where>
+    </select>
 
     <update id="updateUser" parameterType="UserEntity">
-        update t_user set phone = #{user.phone},email = #{user.email},full_name = #{user.fullName},status = #{user.status} where id = #{user.id}
+        update t_user
+        set phone = #{user.phone},
+        email = #{user.email},
+        full_name = #{user.fullName},
+        status = #{user.status}
+        where id = #{user.id}
     </update>
 
 

@@ -4,9 +4,9 @@ package com.zixuan007.admin.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import com.zixuan007.admin.common.utils.TokenUtil;
-import com.zixuan007.admin.pojo.PageRequest;
 import com.zixuan007.admin.constant.Result;
 import com.zixuan007.admin.constant.ResultStatus;
+import com.zixuan007.admin.pojo.dto.UserDTO;
 import com.zixuan007.admin.pojo.entity.UserEntity;
 import com.zixuan007.admin.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -46,7 +46,6 @@ public class UserController {
         if (claims == null && verifyUser == null) {
             return Result.failure(ResultStatus.LOGIN_ERROR);
         }
-
 
         UserEntity resultUser = new UserEntity();
         if (claims != null) {
@@ -88,6 +87,14 @@ public class UserController {
         return Result.success(ResultStatus.LOGIN_ERROR);
     }
 
+    @ApiOperation(value = "用户列表", notes = "用户列表")
+    @GetMapping("/queryList")
+    public Result<IPage<UserDTO>> queryList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                            @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize) {
+        return Result.success(userService.queryList(pageNum, pageSize));
+    }
+
+
     /**
      * 用户名查询
      *
@@ -98,11 +105,11 @@ public class UserController {
      */
     @ApiOperation(value = "用户名查询", notes = "用户名查询")
     @GetMapping("/query")
-    public Result<IPage<UserEntity>> queryUserByName(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                                     @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize,
-                                                     @RequestParam(value = "username", required = false, defaultValue = "") String username) {
+    public Result<IPage<UserDTO>> queryList(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                            @RequestParam(value = "pageNum", required = false, defaultValue = "10") int pageSize,
+                                            @RequestParam(value = "username", required = false, defaultValue = "") String username) {
         if (username == null) return Result.failure();
-        return Result.success(userService.queryList(pageNum, pageSize, username));
+        return Result.success(userService.queryListByName(pageNum, pageSize, username));
     }
 
     /**

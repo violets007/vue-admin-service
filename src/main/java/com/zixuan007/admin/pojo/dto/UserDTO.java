@@ -30,7 +30,7 @@ public class UserDTO {
     private String phone;
 
     @ApiModelProperty("是否禁用")
-    private String status;
+    private boolean status;
 
     @ApiModelProperty("邮箱")
     private String email;
